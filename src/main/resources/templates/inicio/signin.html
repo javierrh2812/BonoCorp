@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head">
+</head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<section class="jumbotron">
+		<br>
+		<div class="card bg-light text-center border-secondary mx-auto" style="width: 35rem;">
+			<br>
+			<h4 class="card-title">Regístrate BonoCorp</h4>
+			
+			<div class="card-body text-left">
+
+				<form th:action="@{/inicio/save}" th:object="${usuario}"
+					method="post">
+
+					<div class="form-group">
+						<label for="nombreUsuario">Usuario</label> <input type="text"
+							class="form-control" th:field="*{nombreUsuario}">
+					</div>
+					
+					<div class="form-group">
+						<label for="Nombres">Nombres</label> <input type="text"
+							class="form-control" th:field="*{nombres}">
+					</div>
+					
+					<div class="form-group">
+						<label for="Contraseña">Contraseña</label> <input type="text"
+							class="form-control" th:field="*{contraseña}"
+							placeholder="Ingrese su contraseña">
+					</div>
+
+					<button type="submit" class="btn btn-primary w-100">Registrar</button>
+				</form>
+			</div>
+
+			<!-- FOOTER DEL LOGIN -->
+			<div class="card-body">
+				<a th:href="@{/inicio/login}">Ya tienes cuenta? Iniciar sesión</a> <b>*</b>
+				<a th:href="@{#}">Olvidaste tu contraseña?</a>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>

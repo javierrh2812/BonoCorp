@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head">
+</head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+		<br>
+		<div class="card bg-light text-center border-secondary mx-auto" style="width: 35rem;">
+
+			<br>
+			<h4 class="card-title">Ingresar a BonoCorp</h4>
+
+
+			<div class="card-body text-left">
+
+				<form th:action="@{/inicio/validar}" th:object="${usuario}"
+					method="post">
+
+					<div class="form-group">
+						<label for="Usuario">Usuario</label> <input type="text"
+							class="form-control" th:field="*{nombreUsuario}">
+					</div>
+
+					<div class="form-group">
+						<label for="Contraseña">Contraseña</label> <input type="password"
+							class="form-control" th:field="*{contraseña}"
+							placeholder="Ingrese su contraseña">
+					</div>
+					<button type="submit" class="btn btn-primary w-100">Login</button>
+				</form>
+
+			</div>
+			<!-- FOOTER DEL LOGIN -->
+			<div class="card-body">
+				<a th:href="@{/inicio/signin}">Regístrate en BonoCorp</a> <b>*</b> <a
+					th:href="@{#}">Olvidaste tu contraseña?</a>
+			</div>
+		</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>

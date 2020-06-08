@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head ">
+</head>
+
+<body>
+
+	<header th:replace="layout/layout :: header "> </header>
+
+	<!-- TITULO -->
+	<br>
+	<H4 class="card-title text-center">Nuevo Bono</H4>
+	<!-- FIN TITULO -->
+
+	<!-- INICIO FORM -->
+	<form th:action="@{/bono/save}" th:object="${bono}" method="post">
+
+		<div th:replace="layout/bono:: bloquesAcordeon"></div>
+
+		<!-- BOTONES -->
+		<div class="d-flex justify-content-center">
+			<button type="submit" class="btn btn-success m-4">Guardar</button>
+			<a th:href="@{/bono/start}" class="btn btn-danger m-4"> Cancelar</a>
+		</div>
+		<!-- END BOTONES -->
+
+	</form>
+	<!-- end form -->
+
+	<footer th:replace="layout/layout :: footer "> </footer>
+
+</body>
+
+</html>

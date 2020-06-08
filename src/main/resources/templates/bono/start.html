@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head ">
+</head>
+
+<body>
+	<header th:replace="layout/layout :: header "> </header>
+
+	<section class="container">
+
+		<div class="card text-center">
+			
+			<div class="card-header">Mis Bonos</div>
+			
+			<div class="card-body">
+			
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">F/Emisión</th>
+							<th scope="col">Valor Nominal</th>
+							<th scope="col">TEA</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bono: ${bonos}">
+							<td th:text="${bono.fechaDeEmision}">.</td>
+							<td th:text="${bono.valorNominal}">.</td>
+							<td th:text="${bono.tea}">.</td>
+														
+							<td>
+								<a th:href="@{'/bono/info/' + ${bono.id}}"
+								class="btn btn-primary"> <i class="fas fa-info"></i></a> 
+								<a th:href="@{'/bono/delete/' + ${bono.id}}"
+								class="btn btn-danger"> <i class="fas fa-trash"></i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</section>
+
+
+	<footer th:replace="layout/layout :: footer "> </footer>
+</body>
+
+
+</html>

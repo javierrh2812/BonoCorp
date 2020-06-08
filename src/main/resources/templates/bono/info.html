@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head ">
+</head>
+
+<body>
+
+	<header th:replace="layout/layout :: header "> </header>
+
+	>
+	<div class="d-flex justify-content-center">
+
+		<button class="btn btn-primary m-2 w-50" type="button" data-toggle="collapse"
+			data-target="#collapseFormulario" aria-expanded="true"
+			aria-controls="collapseFormulario">Editar bono</button>
+		<button class="btn btn-primary m-2 w-50" type="button" data-toggle="collapse"
+			data-target="#collapseTabla" aria-expanded="false"
+			aria-controls="collapseTabla">Calculo de flujo</button>
+	</div>
+	
+
+	<div class="collapse multi-collapse" id="collapseFormulario">
+		<div class="card card-body">
+			<form th:replace="layout/bono :: formBono"></form>
+		</div>
+	</div>
+
+	<div class="collapse multi-collapse" id="collapseTabla">
+		<div class="card card-body">
+			<p>CALCULO DE FLUJO</p>
+		</div>
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer "> </footer>
+
+</body>
+
+</html>
