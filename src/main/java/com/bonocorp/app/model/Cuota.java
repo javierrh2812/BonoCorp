@@ -2,12 +2,9 @@ package com.bonocorp.app.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -23,10 +20,6 @@ public @Data class Cuota {
 	@Column(name = "numero_cuota")
 	private Integer numeroCuota;
 
-	@Column(name = "inflacion_proyectada")
-	private Double inflacionProyectada;
-
-	// CALCULADO
 	@Column(name = "inflacion_periodo")
 	private Double inflacionPeriodo;
 
@@ -39,8 +32,8 @@ public @Data class Cuota {
 	@Column(name = "cupon")
 	private Double cupon;
 
-	@Column(name = "escudo")
-	private Double escudo;
+	//@Column(name = "escudo")
+	//private Double escudo;
 
 	@Column(name = "flujo_emisor")
 	private Double flujoEmisor;
@@ -50,9 +43,5 @@ public @Data class Cuota {
 
 	@Column(name = "flujo_bonista")
 	private Double flujoBonista;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "bono_id")
-	private Bono bono;
 
 }

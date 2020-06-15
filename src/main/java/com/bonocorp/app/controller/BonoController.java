@@ -20,7 +20,7 @@ import com.bonocorp.app.service.BonoService;
 
 @Controller
 @RequestMapping("bono")
-@SessionAttributes("bono")
+@SessionAttributes({"bono", "cuota"})
 public class BonoController {
 
 	@Autowired
@@ -49,6 +49,8 @@ public class BonoController {
 	@PostMapping(value="/save")
 	public String save (@ModelAttribute("bono")Bono bono, Model model, SessionStatus status) {
 		try {
+			bono.CalcularDatos();
+			bono.CalcularFlujo();
 			bonoServ.create(bono);
 			status.setComplete();
 		}
@@ -63,6 +65,7 @@ public class BonoController {
 			Optional<Bono> optional = bonoServ.findById(id);
 			if(optional.isPresent()) {
 				model.addAttribute("bono", optional.get());
+				model.addAttribute("cuotas", optional.get().getCuotas());
 				//List<Cuota> cuotas = optional.get().getCuotas();
 				//model.addAttribute("cuotas", cuotas);
 			}

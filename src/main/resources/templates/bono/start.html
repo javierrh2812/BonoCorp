@@ -9,38 +9,51 @@
 
 	<section class="container">
 
+		<br>
 		<div class="card text-center">
-			
+
 			<div class="card-header">Mis Bonos</div>
-			
+
+			<div th:if="${#lists.isEmpty(bonos)}" class="alert alert-info my-4"
+				th:text="'No hay bonos, agrega uno'"></div>
+
+
 			<div class="card-body">
-			
-				<table class="table table-hover">
-					<thead>
+
+				<table th:if="${not #lists.isEmpty(bonos)}"
+					class="table table-hover">
+					<thead class="thead-dark">
 						<tr>
-							<th scope="col">F/Emisión</th>
 							<th scope="col">Valor Nominal</th>
+							<th scope="col">Valor Comercial</th>
+							<th scope="col">F/Emisión</th>
 							<th scope="col">TEA</th>
+							<th scope="col">TEP</th>
 							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="bono: ${bonos}">
-							<td th:text="${bono.fechaDeEmision}">.</td>
 							<td th:text="${bono.valorNominal}">.</td>
+							<td th:text="${bono.valorComercial}">.</td>
+							<td th:text="${bono.fechaDeEmision}">.</td>
 							<td th:text="${bono.tea}">.</td>
-														
-							<td>
-								<a th:href="@{'/bono/info/' + ${bono.id}}"
-								class="btn btn-primary"> <i class="fas fa-info"></i></a> 
-								<a th:href="@{'/bono/delete/' + ${bono.id}}"
-								class="btn btn-danger"> <i class="fas fa-trash"></i></a>
-							</td>
+							<td th:text="${bono.tep}">.</td>
+							<td><a th:href="@{'/bono/info/' + ${bono.id}}"
+								class="btn btn-primary"> <i class="fas fa-info">Ver</i></a> <a
+								th:href="@{'/bono/delete/' + ${bono.id}}" class="btn btn-danger">
+									<i class="fas fa-trash">Borrar</i>
+							</a></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 
+			<br>
+			<h4 class="card-title">
+				<a class="btn btn-primary" th:href="@{'/bono/nuevo/'}"
+					th:text="'Nuevo bono'"></a>
+			</h4>
 		</div>
 	</section>
 
