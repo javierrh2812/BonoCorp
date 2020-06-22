@@ -1,6 +1,5 @@
 package com.bonocorp.app.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,34 +14,74 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.bonocorp.app.model.Bono;
+import com.bonocorp.app.model.Usuario;
 import com.bonocorp.app.service.BonoService;
+import com.bonocorp.app.service.UsuarioService;
 
 
 @Controller
 @RequestMapping("bono")
-@SessionAttributes({"bono", "cuota"})
+@SessionAttributes({"bono", "cuota", "usuario"})
 public class BonoController {
 
 	@Autowired
 	private BonoService bonoServ; 
 	
-	/*LOGIN*/
-	@GetMapping("/start")
-	public String inicio(Model model){
+	@Autowired
+	private UsuarioService usuarioServ;
+	
+	private static Usuario autenticado=null; 
+
+	@ModelAttribute
+	public void getUsuario(Model model) {
+		model.addAttribute("autenticado", autenticado);
+	}
+	
+	
+	//OBTENER SOLO LOS BONOS DEL USUARIO
+	@GetMapping("/misbonos/{id}")
+	public String misbonos(@PathVariable("id")Integer id, Model model){
+
 		try {
-		List<Bono> bonos = bonoServ.readAll();
-		model.addAttribute("bonos", bonos);
+			autenticado=usuarioServ.findById(id).orElse(null);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+	
+		try {
+		model.addAttribute("autenticado", autenticado);
+		model.addAttribute("bonos", autenticado.getBonos());
+		model.addAttribute("titulo", ": Mis bonos");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 		return "/bono/start";
 	}
+	
+	//OBTENER SOLO LOS BONOS DEL USUARIO
+		@GetMapping("/misbonos")
+		public String misbonos(Model model){
+		
+			try {
+			model.addAttribute("autenticado", autenticado);
+			model.addAttribute("bonos", autenticado.getBonos());
+			model.addAttribute("titulo", ": Mis bonos");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}	
+			return "/bono/start";
+		}
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model){
 		Bono bono= new Bono();
 		model.addAttribute("bono", bono);
+		model.addAttribute("titulo",": Nuevo bono");
 		return "/bono/nuevo";
 	}
 	
@@ -51,13 +90,15 @@ public class BonoController {
 		try {
 			bono.CalcularDatos();
 			bono.CalcularFlujo();
+			bono.setUsuario(autenticado);
 			bonoServ.create(bono);
 			status.setComplete();
+			return "redirect:/bono/misbonos/"+autenticado.getId();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/bono/start";
+		return "/bono/nuevo";
 	}
 	@GetMapping("/info/{id}")
 	public String edit(@PathVariable("id") Integer id,  Model model) {
@@ -66,6 +107,7 @@ public class BonoController {
 			if(optional.isPresent()) {
 				model.addAttribute("bono", optional.get());
 				model.addAttribute("cuotas", optional.get().getCuotas());
+				model.addAttribute("titulo", ": Información del bono");
 				//List<Cuota> cuotas = optional.get().getCuotas();
 				//model.addAttribute("cuotas", cuotas);
 			}

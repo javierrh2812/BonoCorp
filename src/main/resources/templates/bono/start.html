@@ -5,7 +5,7 @@
 </head>
 
 <body>
-	<header th:replace="layout/layout :: header "> </header>
+	<header th:replace="layout/bono :: header"> </header>
 
 	<section class="container">
 
@@ -39,11 +39,13 @@
 							<td th:text="${bono.fechaDeEmision}">.</td>
 							<td th:text="${bono.tea}">.</td>
 							<td th:text="${bono.tep}">.</td>
-							<td><a th:href="@{'/bono/info/' + ${bono.id}}"
-								class="btn btn-primary"> <i class="fas fa-info">Ver</i></a> <a
-								th:href="@{'/bono/delete/' + ${bono.id}}" class="btn btn-danger">
-									<i class="fas fa-trash">Borrar</i>
-							</a></td>
+							<td>
+								<a th:href="@{'/bono/info/' + ${bono.id}}"
+								class="btn btn-primary">Ver</a> 
+								<a th:href="@{'/bono/del/' + ${bono.id}}" 
+								onclick="return confirm('Seguro de eliminar?')"
+								class="btn btn-danger">Borrar</a>
+							</td>
 						</tr>
 					</tbody>
 				</table>

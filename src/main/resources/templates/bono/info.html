@@ -4,11 +4,11 @@
 <head th:replace="layout/layout :: head ">
 </head>
 
-<body>
+<body onload="cambia_bandera()">
 
-	<header th:replace="layout/layout :: header "> </header>
+	<header th:replace="layout/bono :: header "> </header>
 
-
+	<!-- 
 	<div class="d-flex justify-content-center">
 
 		<button class="btn btn-primary m-2 w-50" type="button"
@@ -20,44 +20,44 @@
 			aria-expanded="false" aria-controls="collapseTabla">Calculo
 			de flujo</button>
 	</div>
-	<div class="containter py-4">
+	 -->
+	<div style="width: 70%; margin: auto;">
 
-		<div class="collapse multi-collapse" id="collapseFormulario">
-			<div class="card card-body">
-				<form th:replace="layout/bono :: formBono"></form>
-			</div>
+
+		<div class="card card-body">
+			<form th:replace="layout/bono :: formBono"></form>
 		</div>
 
-		<div class="collapse multi-collapse" id="collapseTabla">
-			<div class="card card-body">
-				<!-- FLUJO PROYECTADO -->
-				<table th:if="${not #lists.isEmpty(cuotas)}"
-					class="table table-hover">
-					<thead>
-						<tr>
-							<th>N°</th>
-							<th>Bono</th>
-							<th>Bono Indexado</th>
-							<th>Cupón</th>
-							<th>F/Emisor</th>
-							<th>F/Emisor /c Escudo</th>
-							<th>F/Bonista</th>
-						</tr>
-					</thead>
 
-					<tbody>
-						<tr th:each="cuota:${cuotas}">
-							<th th:text="${cuota.numeroCuota}"></th>
-							<th th:text="${cuota.valorBono}">-</th>
-							<th th:text="${cuota.bonoIndexado}">-</th>
-							<th th:text="${cuota.cupon}"></th>
-							<th th:text="${cuota.flujoEmisor}">F/Emisor</th>
-							<th th:text="${cuota.flujoEmisorConEscudo}">F/Emisor</th>
-							<th th:text="${cuota.flujoBonista}">F/Bonista</th>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+
+		<div class="card card-body">
+			<!-- FLUJO PROYECTADO -->
+			<table th:if="${not #lists.isEmpty(cuotas)}"
+				class="table table-sm table-hover" style="width: 100%">
+				<thead class="thead-dark">
+					<tr>
+						<th>N°</th>
+						<th>Bono</th>
+						<th>Bono Indexado</th>
+						<th>Cupón</th>
+						<th>F/Emisor</th>
+						<th>F/Emisor /c Escudo</th>
+						<th>F/Bonista</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="cuota:${cuotas}">
+						<th th:text="${cuota.numeroCuota}"></th>
+						<td th:text="${cuota.valorBono}"></td>
+						<td th:text="${cuota.bonoIndexado}"></td>
+						<td th:text="${cuota.cupon}"></td>
+						<td th:text="${cuota.flujoEmisor}"></td>
+						<td th:text="${cuota.flujoEmisorConEscudo}"></td>
+						<td th:text="${cuota.flujoBonista}"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 

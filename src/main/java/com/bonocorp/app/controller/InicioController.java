@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -16,7 +15,6 @@ import com.bonocorp.app.service.UsuarioService;
 
 
 @Controller
-@RequestMapping("inicio")
 @SessionAttributes("usuario")
 public class InicioController {
 
@@ -26,40 +24,33 @@ public class InicioController {
 	
 	
 	/*LOGIN*/
-	@GetMapping("/login")
+	@GetMapping(value = {"/inicio/login", "", "/"})
 	public String inicio(Model model){
 		Usuario usuario = new Usuario();	
-		usuario.setNombreUsuario("chupete");
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("titulo", ": Iniciar sesión");
 		return "/inicio/login";
 	}
 	
-	@PostMapping("/validar")
+	
+	//EL MÉTODO LOGIN MÁS INSEGURO DEL MUNDO XD
+	@PostMapping("/inicio/validar")
 	public String validar(@ModelAttribute("usuario") Usuario usuario, Model model, 
 			SessionStatus status) {
 		try {
-			System.out.println("DATOS MANDADOS EN LOGIN");
-			System.out.println(usuario.getNombres());
-			System.out.println(usuario.getContraseña());
-			System.out.println(usuario.getNombreUsuario());
-			System.out.println(usuario.getId());
+			
+			//BUSCA SI EL USUARIO CON EL NOMBRE DE USUARIO ENVIADO EXISTE
 			Usuario find = usuarioServ.findByUsername(usuario.getNombreUsuario()).orElse(null);
+			
 			if (find!=null) {
-				System.out.println("Contraseña mandadada "+usuario.getContraseña());
-				System.out.println("Contraseña de usuario "+find.getContraseña());
-
+				//SI EXISTE, COMPARAR LA CONTRASEÑA MANDADA CON LA DEL USUARIO
 				if(find.getContraseña().equalsIgnoreCase(usuario.getContraseña())) {
-					System.out.println("Credenciales correctas");
-					status.setComplete();}
-				
-				else 
-					System.out.println("Cotraseña erroneo o usuario inexistente");
+					status.setComplete();
+					return "redirect:/bono/misbonos/"+find.getId();
+					}
+
 			}
-			else {
-				System.out.println("usuario no encontrado");
-			}
-			
-			
+						
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,22 +61,18 @@ public class InicioController {
 	
 	
 	/*REGISTRO*/
-	@GetMapping("/signin")
+	@GetMapping("/inicio/signin")
 	public String signin(Model model){
 		Usuario usuario = new Usuario();
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("titulo", ": Registro");
 		return "/inicio/signin";
 	}
-	@PostMapping("/save")
+	@PostMapping("/inicio/save")
 	public String save(@ModelAttribute("usuario") Usuario usuario, Model model, 
 			SessionStatus status) {
 		try {
 			usuarioServ.create(usuario);
-			System.out.println("DATOS DE USUARIO A REGISTRAR");
-			System.out.println(usuario.getNombres());
-			System.out.println(usuario.getContraseña());
-			System.out.println(usuario.getNombreUsuario());
-			System.out.println(usuario.getId());
 			status.setComplete();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

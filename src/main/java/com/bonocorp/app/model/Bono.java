@@ -18,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 @Entity
@@ -27,13 +30,29 @@ public @Data class Bono {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Min(value = 1, message = "Debe colocar un valor positivo")
+	@NotNull(message = "Debe ingresar el valor nominal")
 	@Column(name = "valor_nominal", nullable = false)
 	private Double valorNominal;
 	
+
+	@Min(value = 1, message = "Debe colocar un valor positivo")
+	@NotNull(message = "Debe ingresar el valor comercial")
 	@Column(name = "valor_comercial", nullable = false)
 	private Double valorComercial;
+	
+	//1- sol, 2-dolar, 3-euro
+	@Column(name="tipo_moneda")
+	private Integer tipoMoneda;
+	
+	
+	@NotNull(message="Debe ingresar los años de pago")
+	@Min(value = 1, message = "Ingrese un valor positivo")
 	@Column(name = "años_de_pago")
 	private Integer añosDePago;
+	
+
+	@NotNull(message="Debe elegir el periodo de pago")
 	@Column(name = "dias_por_periodo")
 	private Integer diasPorPeriodo;
 
@@ -42,6 +61,7 @@ public @Data class Bono {
 	@Temporal(TemporalType.DATE)
 	private Date fechaDeEmision;
 
+	
 	@Column(name = "dias_por_año")
 	private Integer diasPorAño = 360;
 	@Column(name = "impuesto_renta")
@@ -60,10 +80,13 @@ public @Data class Bono {
 	private Double porcentajeCavali;
 
 	// TASAS
+	@Min(value = 0, message = "Ingrese un valor positivo")
 	@Column(name = "tea")
 	private Double tea;
+	
 	@Column(name = "tasa_de_descuento")
 	private Double tasaDescuento = 0.0;
+	
 	@Column(name = "tasa_inflacion_anual")
 	private Double tasaInflacionAnual = 0.0;
 
@@ -78,9 +101,12 @@ public @Data class Bono {
 	private Double tep;
 	@Column(name = "tasa_inflacion_periodo")
 	private Double tasaInflacionPeriodo = 0.0;
+	@Column(name = "escudo")
+	private Double escudo;
 
 	// MÉTODO
-	@Column(name = "metodo")
+	
+	@Column(name = "metodo", nullable = false)
 	private String metodo;
 
 	// USUARIO DEL BONO
@@ -88,23 +114,27 @@ public @Data class Bono {
 	private Usuario usuario;
 
 	// COUTAS, CUPONES
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//cascadetype.all para persistir la lista 
+	//orphan removal para eliminar los elementos anteriores 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "bono_id")
-	private List<Cuota> cuotas;
+	private List<Cuota> cuotas = new ArrayList<Cuota>();
 
 	public void CalcularDatos() {
 
-		this.periodosPorAño = diasPorAño / diasPorPeriodo;
-		this.totalPeriodos = periodosPorAño * añosDePago;
-
-		System.out.println(1 + tea / 100);
-		System.out.println(1.00 * diasPorPeriodo / diasPorAño);
-		this.tep = Math.pow(1 + tea / 100, 1.00 * diasPorPeriodo / diasPorAño) - 1;
-		System.out.println("tep:" + tep);
-		this.tep *= 100;
-		System.out.println("tep %: " + tep);
-		this.tasaPeriodo = Math.pow(1 + tasaDescuento / 100, diasPorPeriodo / diasPorAño) - 1;
-		this.tasaPeriodo *= 100;
+		periodosPorAño = diasPorAño / diasPorPeriodo;
+		
+		totalPeriodos = periodosPorAño * añosDePago;
+		
+		//tep = (1+tea)^(diaperiodo/360) - 1
+		tep = Math.pow(1 + tea / 100, 1.00 * diasPorPeriodo / diasPorAño) - 1;
+		//se divide y se multiplican los porcentajes por 100 porque
+		//el usuario ingresa el valor porcentual
+		tep *= 100;
+		
+		//tep = (1+teaDescuento)^(diaperiodo/360) - 1
+		tasaPeriodo = Math.pow(1 + tasaDescuento / 100, diasPorPeriodo / diasPorAño) - 1;
+		tasaPeriodo *= 100;
 
 	}
 
@@ -128,22 +158,29 @@ public @Data class Bono {
 
 	public void CalcularFlujo() {
 		
-		cuotas = new ArrayList<Cuota>();
+		cuotas.clear();
+		//se inicializa la cuota
 		
-		double escudo = valorNominal * tep * impuestoRenta / 10000;
+		//escudo = cupon*%irenta
+		escudo = valorNominal * tep * impuestoRenta / 10000;
+		
+		
+		//desde el periodo 0, hasta el total calculado
 		for (int i = 0; i <= totalPeriodos; i++) {
+			
 			Cuota aux = new Cuota();
 
 			aux.setNumeroCuota(i);
 			if (i == 0) {
 				aux.setInflacionPeriodo(0.0);
-				double suma1 = porcentajeCavali + porcentajeColocacion + porcentajeEstructuracion + porcentajeFlotacion;
+				double suma1 = porcentajeCavali + porcentajeColocacion +
+						porcentajeEstructuracion + porcentajeFlotacion;
 				suma1 /= 100;
-				aux.setFlujoEmisor(this.valorComercial * (1 - suma1));
+				aux.setFlujoEmisor(valorComercial * (1 - suma1));
 				aux.setFlujoEmisorConEscudo(aux.getFlujoEmisor());
 				double suma2 = porcentajeFlotacion + porcentajeCavali;
 				suma2 /= 100;
-				aux.setFlujoBonista(-1 * this.valorComercial * (1 + suma2));
+				aux.setFlujoBonista(-1 * valorComercial * (1 + suma2));
 
 			} else {
 				aux.setValorBono(this.valorNominal);

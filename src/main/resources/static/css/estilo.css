@@ -1,0 +1,14 @@
+.botonini {
+	border-radius: 20px;
+	width: 100%;
+	height: 30px;
+}
+
+.btn-acord {
+	border-radius:0px;
+	text-align: left;
+	padding: 17px 20px;
+	margin: 1px;
+	background-color: gray;
+	color: white;
+}
