@@ -24,6 +24,7 @@
 					class="table table-hover">
 					<thead class="thead-dark">
 						<tr>
+							<th scope="col">Moneda</th>
 							<th scope="col">Valor Nominal</th>
 							<th scope="col">Valor Comercial</th>
 							<th scope="col">F/Emisión</th>
@@ -34,18 +35,25 @@
 					</thead>
 					<tbody>
 						<tr th:each="bono: ${bonos}">
+							<td th:switch="${bono.tipoMoneda}">
+							
+							<span th:case=1>PEN</span>
+							
+							<span th:case=2>DOL</span>
+							
+							<span th:case=3>EUR</span> 
+								
+							</td>	
 							<td th:text="${bono.valorNominal}">.</td>
 							<td th:text="${bono.valorComercial}">.</td>
 							<td th:text="${bono.fechaDeEmision}">.</td>
-							<td th:text="${bono.tea}">.</td>
-							<td th:text="${bono.tep}">.</td>
-							<td>
-								<a th:href="@{'/bono/info/' + ${bono.id}}"
-								class="btn btn-primary">Ver</a> 
-								<a th:href="@{'/bono/del/' + ${bono.id}}" 
+							<td th:text="${bono.tea} + '%'">.</td>
+							<td th:text="${bono.tep} + '%'">.</td>
+							<td><a th:href="@{'/bono/info/' + ${bono.id}}"
+								class="btn btn-primary">Ver</a> <a
+								th:href="@{'/bono/del/' + ${bono.id}}"
 								onclick="return confirm('Seguro de eliminar?')"
-								class="btn btn-danger">Borrar</a>
-							</td>
+								class="btn btn-danger">Borrar</a></td>
 						</tr>
 					</tbody>
 				</table>

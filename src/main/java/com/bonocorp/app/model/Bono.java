@@ -22,6 +22,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.bonocorp.app.util.Metodos;
+
 import lombok.Data;
 @Entity
 @Table(name = "bonos")
@@ -121,6 +124,9 @@ public @Data class Bono {
 	private List<Cuota> cuotas = new ArrayList<Cuota>();
 
 	public void CalcularDatos() {
+		
+		this.valorNominal *=100;
+		this.valorNominal /=100;
 
 		periodosPorAño = diasPorAño / diasPorPeriodo;
 		
@@ -155,6 +161,16 @@ public @Data class Bono {
 		// SE AMORTIZA EN LA UTLTIMA CUOTA
 
 	}
+	
+	public double redondearDecimales(double valorInicial, int numeroDecimales) {
+        double parteEntera, resultado;
+        resultado = valorInicial;
+        parteEntera = Math.floor(resultado);
+        resultado=(resultado-parteEntera)*Math.pow(10, numeroDecimales);
+        resultado=Math.round(resultado);
+        resultado=(resultado/Math.pow(10, numeroDecimales))+parteEntera;
+        return resultado;
+    }
 
 	public void CalcularFlujo() {
 		
@@ -195,9 +211,8 @@ public @Data class Bono {
 			}
 			aux.setFlujoEmisor((aux.getFlujoEmisor()*100)/100);
 			aux.setFlujoBonista((aux.getFlujoBonista()*100)/100);
-
-
-			System.out.println(aux.toString());
+			
+			
 			cuotas.add(aux);
 
 		}
@@ -212,6 +227,7 @@ public @Data class Bono {
 			break;
 
 		}
-
+		
+		tep = Metodos.redondearDecimales(tep, 7);
 	}
 }
