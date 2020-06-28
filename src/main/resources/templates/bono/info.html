@@ -38,8 +38,7 @@
 					<tr>
 						<th>N°</th>
 						<th>Bono</th>
-						<th>Bono Indexado</th>
-						<th>Cupón</th>
+						<th>Cuota</th>
 						<th>F/Emisor</th>
 						<th>F/Emisor /c Escudo</th>
 						<th>F/Bonista</th>
@@ -50,7 +49,6 @@
 					<tr th:each="cuota:${cuotas}">
 						<th th:text="${cuota.numeroCuota}"></th>
 						<td th:text="${cuota.valorBono}"></td>
-						<td th:text="${cuota.bonoIndexado}"></td>
 						<td th:text="${cuota.cupon}"></td>
 						<td th:text="${cuota.flujoEmisor}"></td>
 						<td th:text="${cuota.flujoEmisorConEscudo}"></td>

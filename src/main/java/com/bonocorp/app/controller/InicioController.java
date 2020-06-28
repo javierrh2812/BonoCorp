@@ -52,7 +52,6 @@ public class InicioController {
 			}
 						
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		return "redirect:/inicio/index";
@@ -75,7 +74,6 @@ public class InicioController {
 			usuarioServ.create(usuario);
 			status.setComplete();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		return "redirect:/inicio/login";

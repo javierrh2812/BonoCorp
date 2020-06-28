@@ -88,7 +88,6 @@ public class BonoController {
 	@PostMapping(value="/save")
 	public String save (@ModelAttribute("bono")Bono bono, Model model, SessionStatus status) {
 		try {
-			bono.CalcularDatos();
 			bono.CalcularFlujo();
 			bono.setUsuario(autenticado);
 			bonoServ.create(bono);
@@ -100,6 +99,9 @@ public class BonoController {
 		}
 		return "/bono/nuevo";
 	}
+	
+	
+	
 	@GetMapping("/info/{id}")
 	public String edit(@PathVariable("id") Integer id,  Model model) {
 		try {
@@ -117,7 +119,6 @@ public class BonoController {
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "/bono/info";
@@ -130,10 +131,9 @@ public class BonoController {
 				bonoServ.deleteById(id);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:/bono/start";
+		return "redirect:/bono/misbonos";
 	}
 	
 }

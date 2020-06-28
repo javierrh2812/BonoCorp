@@ -20,14 +20,14 @@ public @Data class Cuota {
 	@Column(name = "numero_cuota")
 	private Integer numeroCuota;
 
-	@Column(name = "inflacion_periodo")
-	private Double inflacionPeriodo;
+	//@Column(name = "inflacion_periodo")
+	//private Double inflacionPeriodo;
 
 	@Column(name = "valor_bono")
 	private Double valorBono;
 
-	@Column(name = "bono_indexado")
-	private Double bonoIndexado;
+	//@Column(name = "bono_indexado")
+	//private Double bonoIndexado;
 
 	@Column(name = "cupon")
 	private Double cupon;
@@ -43,5 +43,6 @@ public @Data class Cuota {
 
 	@Column(name = "flujo_bonista")
 	private Double flujoBonista;
+
 
 }

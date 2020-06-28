@@ -16,7 +16,13 @@ Se utiliza una base de datos en memoria embebido, debe editar el archivo propert
 Lombok puede ocasionar errores si no lo tiene instalado, se adjunta documentación: https://projectlombok.org/
 
 ### VSCode
-Abrir el editor VSCode en la carpeta y ejecutar el comando
-```
+Requisitos:
+-java
+-maven
+-lombok (extension de vscode)
+
+En vscode o una terminal ejecutar
+
+```bash
 mvn spring-boot:run
 ```

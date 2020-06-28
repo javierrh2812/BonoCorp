@@ -11,20 +11,16 @@
 		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 			<a class="navbar-brand" href="#">BonoCorp</a>
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNav" aria-controls="navbarNav"
-				aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/bono/misbonos/}">Mis Bonos</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/bono/nuevo}">Nuevo Bono</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/misdatos}">Mis Datos</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/bono/misbonos/}">Mis Bonos</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/bono/nuevo}">Nuevo Bono</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/misdatos}">Mis Datos</a></li>
 				</ul>
 
 
@@ -32,9 +28,8 @@
 
 				<!-- Default dropleft button -->
 				<div class="btn-group dropleft">
-					<button type="button" class="btn btn-secondary dropdown-toggle"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						th:text="${autenticado.nombres}"></button>
+					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false" th:text="${autenticado.nombres}"></button>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="/inicio/login">Cerrar sesión</a>
 						<!-- Dropdown menu links -->
@@ -44,20 +39,15 @@
 			</div>
 		</nav>
 
-		<div class="alert alert-success" th:if="${success != null}"
-			th:text="${success}"></div>
-		<div class="alert alert-danger" th:if="${error != null}"
-			th:text="${error}"></div>
-		<div class="alert alert-warning" th:if="${warning != null}"
-			th:text="${warning}"></div>
-		<div class="alert alert-info" th:if="${info != null}"
-			th:text="${info}"></div>
+		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
 
 	</header>
 
 	<!-- INICIO FORM -->
-	<form th:action="@{/bono/save}" th:object="${bono}" method="post"
-		th:fragment="formBono">
+	<form th:action="@{/bono/save}" th:object="${bono}" method="post" th:fragment="formBono">
 
 		<!-- INICIO ACORDEON -->
 		<div class="accordion" id="accordion" th:fragment="bloquesAcordeon">
@@ -66,8 +56,8 @@
 			<!-- BLOQUE 1 - DATOS DEL BONO -->
 			<div class="card" th:fragment="bloque1">
 
-				<button type="button" class="btn btn-acord" data-toggle="collapse"
-					data-target="#collapseOne">Datos del Bono</button>
+				<button type="button" class="btn btn-acord" data-toggle="collapse" data-target="#collapseOne">Datos del
+					Bono</button>
 
 				<!-- end card header -->
 
@@ -79,9 +69,8 @@
 
 
 							<div class="col-md-3 mb-3">
-								<label for="Moneda">Moneda</label> <select id="moneda"
-									onchange="cambia_bandera()" th:field="*{tipoMoneda}"
-									class="form-control">
+								<label for="Moneda">Moneda</label> <select id="moneda" onchange="cambia_bandera()"
+									th:field="*{tipoMoneda}" class="form-control">
 									<option value="1">Sol</option>
 									<option value="2">Dólar</option>
 									<option value="3">Euro</option>
@@ -92,22 +81,20 @@
 								<label> </label>
 								<div class="py-3">
 
-									<span id="simbolo"></span> <img id="bandera" height="25px"
-										width="30px">
+									<span id="simbolo"></span> <img id="bandera" height="25px" width="30px">
 								</div>
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label for="valorNominal">Valor nominal</label> <input
-									type="number" step="0.01" class="form-control"
-									th:field="*{valorNominal}" required pattern="[0-9.]+"
+								<label for="valorNominal">Valor nominal</label> <input 
+								id="vnom" onchange="calcula_escudo()" type="number" step="0.01"
+									class="form-control" th:field="*{valorNominal}" required pattern="[0-9.]+"
 									title="Ingresar solo números">
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label for="valorComercial">Valor comercial</label> <input
-									type="number" step="0.01" class="form-control"
-									th:field="*{valorComercial}" required pattern="[0-9.]+"
+								<label for="valorComercial">Valor comercial</label> <input type="number" step="0.01"
+									class="form-control" th:field="*{valorComercial}" required pattern="[0-9.]+"
 									title="Ingresar solo números">
 							</div>
 
@@ -120,30 +107,33 @@
 						<div class="form-row">
 
 							<div class="col-md-3 mb-3">
-								<label for="fechaDeEmision">Fecha de emisión</label> <input
-									type="date" class="form-control" th:field="*{fechaDeEmision}">
+								<label for="fechaDeEmision">Fecha de emisión</label> <input type="date"
+									class="form-control" th:field="*{fechaDeEmision}">
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label for="metodo">Método</label> <select th:field="*{metodo}"
-									class="form-control">
+								<label for="metodo">Método</label> <select th:field="*{metodo}" class="form-control">
 									<option value="Americano">Americano</option>
-									<option value="Francés">Francés</option>
-									<option value="Alemán">Alemán</option>
+									<option value="Frances">Francés</option>
+									<option value="Aleman">Alemán</option>
 								</select>
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label>Años de pago</label> <input type="number"
-									class="form-control" th:field="*{añosDePago}" required
-									pattern="[0-9]{1,2}"
+								<label>Años de pago</label> <input 
+								id="adp"
+								onchange="calcular_periodos()"
+								type="number" class="form-control"
+									th:field="*{añosDePago}" required pattern="[0-9]{1,2}"
 									title="Ingresar solo números (entre 1 y 2 cifras)">
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label>Fecuencia de pago (dias)</label> <input type="number"
-									class="form-control" th:field="*{diasPorPeriodo}" required
-									pattern="[0-9]{1,3}"
+								<label>Fecuencia de pago (dias)</label> <input 
+								id = "fdp"
+								onchange="calcular_periodos()"
+								type="number" class="form-control"
+									th:field="*{diasPorPeriodo}" required pattern="[0-9]{1,3}"
 									title="Ingresar solo números (entre 1 y 3 cifras)">
 							</div>
 
@@ -161,8 +151,8 @@
 			<!-- BLOQUE 2 - TASAS -->
 			<div class="card" th:fragment="bloque2">
 
-				<button class="btn btn-acord" type="button" data-toggle="collapse"
-					data-target="#collapseTwo">Tasas y Plazos</button>
+				<button class="btn btn-acord" type="button" data-toggle="collapse" data-target="#collapseTwo">Tasas y
+					Plazos</button>
 
 				<!-- END CARD HEADER -->
 
@@ -178,8 +168,10 @@
 								<label>TEA</label>
 
 								<div class="input-group">
-									<input id="tea" th:field="*{tea}" type="number" step="0.01"
-										class="form-control" required pattern="[0-9\.]+"
+									<input id="tea" th:field="*{tea}" 
+									onchange="calcular_tep()"
+									type="number" step="0.01" class="form-control"
+										required pattern="[0-9\.]+"
 										title="Ingresar solo números y como máximo un punto (.)">
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
@@ -188,8 +180,8 @@
 							</div>
 
 							<div class="col-md-3 mb-3">
-								<label for="metodo">Tipo de Tasa</label> <select
-									onchange="cambia_tasa()" id="tipoDeTasa" class="form-control">
+								<label for="metodo">Tipo de Tasa</label> <select onchange="cambia_tasa()"
+									id="tipoDeTasa" class="form-control">
 									<option value="1">Tasa Efectiva</option>
 									<option value="2">Tasa Nominal</option>
 								</select>
@@ -198,10 +190,8 @@
 
 
 							<div id="capitalizacion" class="col-md-3 mb-3" style="display: none;">
-								<label for="capitalizacion">Periodo de capitalización</label> <select
-									id="dias_cap"
-									onchange="calcular_tea()"
-									class="form-control">
+								<label for="capitalizacion">Periodo de capitalización</label> <select id="dias_cap"
+									onchange="calcular_tea()" class="form-control">
 									<option value=1>Diario</option>
 									<option value=15>Quincenal</option>
 									<option value=30>Mensual</option>
@@ -215,11 +205,9 @@
 							<div id="tasanominal" class="col-md-3 mb-3" style="display: none;">
 								<label for="metodo">Tasa Nominal Anual</label>
 								<div class="input-group">
-									<input id="tna" type="number" step="0.01" class="form-control"
-										required pattern="[0-9\.]+"
-										onchange="calcular_tea()"
-										title="Ingresar solo números y como máximo un punto (.)"
-										value=0.00>
+									<input id="tna" type="number" step="0.01" class="form-control" required
+										pattern="[0-9\.]+" onchange="calcular_tea()"
+										title="Ingresar solo números y como máximo un punto (.)" value=0.00>
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>
@@ -238,30 +226,14 @@
 							<div class="col-md-6 mb-3">
 								<label>Tasa de descuento</label>
 								<div class="input-group">
-									<input th:field="*{tasaDescuento}" type="number" step="0.01"
-										class="form-control">
+									<input id="tdesc" th:field="*{tasaDescuento}" 
+									onchange="calcular_tperiodos()"
+									type="number" step="0.01" class="form-control">
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>
 								</div>
 							</div>
-
-
-
-
-							<div class="col-md-6 mb-3">
-								<label>Inflación estimada</label>
-
-								<div class="input-group">
-									<input th:field="*{tasaInflacionAnual}" type="number"
-										step="0.01" class="form-control" />
-									<div class="input-group-append">
-										<span class="input-group-text">%</span>
-									</div>
-								</div>
-							</div>
-
-
 
 						</div>
 						<!-- end form row -->
@@ -282,8 +254,8 @@
 
 				<!-- inicio card header -->
 
-				<button class="btn btn-acord" type="button" data-toggle="collapse"
-					data-target="#collapseThree">Costos y gastos</button>
+				<button class="btn btn-acord" type="button" data-toggle="collapse" data-target="#collapseThree">Costos y
+					gastos</button>
 				<!-- END CARD HEADER -->
 
 				<!-- inicio collapse -->
@@ -298,8 +270,8 @@
 							<div class="col-md-2">
 								<label>Cavali</label>
 								<div class="input-group">
-									<input th:field="*{porcentajeCavali}" type="number"
-										step="0.001" class="form-control">
+									<input th:field="*{porcentajeCavali}" type="number" step="0.001"
+										class="form-control">
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>
@@ -312,8 +284,8 @@
 							<div class="col-md-2">
 								<label>Colocación</label>
 								<div class="input-group">
-									<input th:field="*{porcentajeColocacion}" type="number"
-										step="0.01" class="form-control">
+									<input th:field="*{porcentajeColocacion}" type="number" step="0.01"
+										class="form-control">
 
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
@@ -326,8 +298,8 @@
 							<div class="col-md-2">
 								<label>Estructuración</label>
 								<div class="input-group">
-									<input th:field="*{porcentajeEstructuracion}" type="number"
-										step="0.01" class="form-control">
+									<input th:field="*{porcentajeEstructuracion}" type="number" step="0.01"
+										class="form-control">
 
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
@@ -342,8 +314,8 @@
 								<label>Flotación</label>
 
 								<div class="input-group">
-									<input th:field="*{porcentajeFlotacion}" type="number"
-										step="0.01" class="form-control">
+									<input th:field="*{porcentajeFlotacion}" type="number" step="0.01"
+										class="form-control">
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>
@@ -357,8 +329,7 @@
 								<label>Prima</label>
 
 								<div class="input-group">
-									<input th:field="*{porcentajePrima}" type="number" step="0.01"
-										class="form-control">
+									<input th:field="*{porcentajePrima}" type="number" step="0.01" class="form-control">
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>
@@ -377,6 +348,79 @@
 
 			</div>
 			<!-- END BLOQUE 3 -->
+
+
+
+
+
+
+
+
+			<!-- BLOQUE 4 - DATOS CALCULADOS -->
+			<div class="card">
+
+
+				<!-- inicio card header -->
+				<button class="btn btn-acord" type="button" 
+				data-toggle="collapse" data-target="#collapseFour">Datos
+					Calculados</button>
+				<!-- END CARD HEADER -->
+
+				<!-- inicio collapse -->
+				<div id="collapseFour" class="collapse" data-parent="#accordion">
+
+					<div class="card-body">
+
+						<div class="form-row d-flex justify-content-center">
+
+
+							<div class="col-md-2">
+								<label>Periodos por año</label>
+								<input id="ppa" th:field="*{periodosPorAño}" 
+								readonly=true type="number" class="form-control">
+							</div>
+
+							<div class="col-md-2">
+								<label>Total periodos</label>
+								<input id="tper" th:field="*{totalPeriodos}" 
+								readonly=true type="number" class="form-control">
+							</div>
+
+							<div class="col-md-2">
+								<label>Tasa d/periodo</label>
+								<input id="tperiod" th:field="*{tasaPeriodo}" 
+								readonly=true type="number" class="form-control">
+							</div>
+
+							<div class="col-md-2">
+								<label>TEP</label>
+								
+								<input id="tep" th:field="*{tep}" 
+								readonly=true
+								type="number" class="form-control">
+							</div>
+
+							
+							<div class="col-md-2">
+								<label>Escudo</label>
+								<input id="escudo" th:field="*{escudo}" 
+								readonly=true
+								type="number" step="0.001" class="form-control">
+							</div>
+
+						</div>
+						<!-- end form row -->
+
+					</div>
+					<!-- end card body -->
+
+				</div>
+				<!-- END COLLAPSE -->
+
+
+			</div>
+			<!-- END BLOQUE 4 -->
+
 
 
 

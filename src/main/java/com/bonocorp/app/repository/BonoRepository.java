@@ -8,5 +8,4 @@ import com.bonocorp.app.model.Bono;
 @Repository
 public interface BonoRepository extends JpaRepository<Bono, Integer>{
 	
-
 }

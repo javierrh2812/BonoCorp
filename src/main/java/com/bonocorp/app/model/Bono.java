@@ -26,6 +26,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.bonocorp.app.util.Metodos;
 
 import lombok.Data;
+
 @Entity
 @Table(name = "bonos")
 public @Data class Bono {
@@ -37,25 +38,22 @@ public @Data class Bono {
 	@NotNull(message = "Debe ingresar el valor nominal")
 	@Column(name = "valor_nominal", nullable = false)
 	private Double valorNominal;
-	
 
 	@Min(value = 1, message = "Debe colocar un valor positivo")
 	@NotNull(message = "Debe ingresar el valor comercial")
 	@Column(name = "valor_comercial", nullable = false)
 	private Double valorComercial;
-	
-	//1- sol, 2-dolar, 3-euro
-	@Column(name="tipo_moneda")
+
+	// 1- sol, 2-dolar, 3-euro
+	@Column(name = "tipo_moneda")
 	private Integer tipoMoneda;
-	
-	
-	@NotNull(message="Debe ingresar los años de pago")
+
+	@NotNull(message = "Debe ingresar los años de pago")
 	@Min(value = 1, message = "Ingrese un valor positivo")
 	@Column(name = "años_de_pago")
 	private Integer añosDePago;
-	
 
-	@NotNull(message="Debe elegir el periodo de pago")
+	@NotNull(message = "Debe elegir el periodo de pago")
 	@Column(name = "dias_por_periodo")
 	private Integer diasPorPeriodo;
 
@@ -64,7 +62,6 @@ public @Data class Bono {
 	@Temporal(TemporalType.DATE)
 	private Date fechaDeEmision;
 
-	
 	@Column(name = "dias_por_año")
 	private Integer diasPorAño = 360;
 	@Column(name = "impuesto_renta")
@@ -72,7 +69,7 @@ public @Data class Bono {
 
 	@Column(name = "porcentaje_prima")
 	private Double porcentajePrima;
-	
+
 	@Column(name = "porcentaje_estructuracion")
 	private Double porcentajeEstructuracion;
 	@Column(name = "porcentaje_flotacion")
@@ -86,12 +83,9 @@ public @Data class Bono {
 	@Min(value = 0, message = "Ingrese un valor positivo")
 	@Column(name = "tea")
 	private Double tea;
-	
+
 	@Column(name = "tasa_de_descuento")
-	private Double tasaDescuento = 0.0;
-	
-	@Column(name = "tasa_inflacion_anual")
-	private Double tasaInflacionAnual = 0.0;
+	private Double tasaDescuento;
 
 	// DATOS CALCULADOS
 	@Column(name = "periodos_por_año")
@@ -102,13 +96,11 @@ public @Data class Bono {
 	private Double tasaPeriodo;
 	@Column(name = "tep")
 	private Double tep;
-	@Column(name = "tasa_inflacion_periodo")
-	private Double tasaInflacionPeriodo = 0.0;
 	@Column(name = "escudo")
 	private Double escudo;
 
 	// MÉTODO
-	
+
 	@Column(name = "metodo", nullable = false)
 	private String metodo;
 
@@ -117,117 +109,160 @@ public @Data class Bono {
 	private Usuario usuario;
 
 	// COUTAS, CUPONES
-	//cascadetype.all para persistir la lista 
-	//orphan removal para eliminar los elementos anteriores 
+	// cascadetype.all para persistir la lista
+	// orphan removal para eliminar los elementos anteriores
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "bono_id")
 	private List<Cuota> cuotas = new ArrayList<Cuota>();
 
+	// RESULTADOS FINALES
+
+	@Column(name = "tcea_emisor")
+	private Double tceaEmisor;
+
+	@Column(name = "tcea_emisor_con_escudo")
+	private Double tceaEmisorConEscudo;
+
+	@Column(name = "trea_bonista")
+	private Double treaBonista;
+
+	@Column(name = "precio_actual")
+	private Double precioActual;
+
+	@Column(name = "valor_neto_actual")
+	private Double valorNetoActual;
+
 	public void CalcularDatos() {
-		
-		this.valorNominal *=100;
-		this.valorNominal /=100;
-
-		periodosPorAño = diasPorAño / diasPorPeriodo;
-		
-		totalPeriodos = periodosPorAño * añosDePago;
-		
-		//tep = (1+tea)^(diaperiodo/360) - 1
-		tep = Math.pow(1 + tea / 100, 1.00 * diasPorPeriodo / diasPorAño) - 1;
-		//se divide y se multiplican los porcentajes por 100 porque
-		//el usuario ingresa el valor porcentual
-		tep *= 100;
-		
-		//tep = (1+teaDescuento)^(diaperiodo/360) - 1
-		tasaPeriodo = Math.pow(1 + tasaDescuento / 100, diasPorPeriodo / diasPorAño) - 1;
-		tasaPeriodo *= 100;
 
 	}
 
-	public void CalcularMetodoFrances() {
-
-		// SE CALCULA PRIMERO LA RENTA
-
-	}
-
-	public void CalcularMetodoAleman() {
-
-		// SE CALCULA PRIMERO LA AMORTIZACION
-
-	}
-
-	public void CalcularMetodoAmericano() {
+	public void CalcularFlujo() {
 
 		// SE AMORTIZA EN LA UTLTIMA CUOTA
 
-	}
-	
-	public double redondearDecimales(double valorInicial, int numeroDecimales) {
-        double parteEntera, resultado;
-        resultado = valorInicial;
-        parteEntera = Math.floor(resultado);
-        resultado=(resultado-parteEntera)*Math.pow(10, numeroDecimales);
-        resultado=Math.round(resultado);
-        resultado=(resultado/Math.pow(10, numeroDecimales))+parteEntera;
-        return resultado;
-    }
-
-	public void CalcularFlujo() {
-		
 		cuotas.clear();
-		//se inicializa la cuota
-		
-		//escudo = cupon*%irenta
-		escudo = valorNominal * tep * impuestoRenta / 10000;
-		
-		
-		//desde el periodo 0, hasta el total calculado
+		// se inicializa la cuota
+
+		// Si el metodo es frances
+		Double cuotacte = 0.0, amortizacion = 0.0;
+		Double interes = 0.0;
+		//if (metodo == "Frances"){
+
+			Double num = 0.0, den = 0.0, t=0.0;
+			t = tep/100;
+			num = Math.pow(1+t, totalPeriodos)* t;
+			den = Math.pow(1+t, totalPeriodos) -1;
+			cuotacte = -1.0*valorNominal * num/den;
+
+
+			System.out.println("i:"+t+", vnom: "+valorNominal+ ", num: "+num+" ,den: "+den+", cuotacte: "+cuotacte);
+		//}
+		//if (metodo == "Aleman")
+			amortizacion = Metodos.redondearDecimales(valorNominal / totalPeriodos, 2);
+
+		// desde el periodo 0, hasta el total calculado
 		for (int i = 0; i <= totalPeriodos; i++) {
-			
+
 			Cuota aux = new Cuota();
 
 			aux.setNumeroCuota(i);
+
+			// CUOTA 0
 			if (i == 0) {
-				aux.setInflacionPeriodo(0.0);
-				double suma1 = porcentajeCavali + porcentajeColocacion +
-						porcentajeEstructuracion + porcentajeFlotacion;
-				suma1 /= 100;
-				aux.setFlujoEmisor(valorComercial * (1 - suma1));
+
+				double suma1 = (porcentajeCavali + porcentajeColocacion + porcentajeEstructuracion
+						+ porcentajeFlotacion) / 100;
+
+				aux.setFlujoEmisor(Metodos.redondearDecimales(valorComercial * (1 - suma1), 2));
+
+				double suma2 = (porcentajeFlotacion + porcentajeCavali) / 100;
+
 				aux.setFlujoEmisorConEscudo(aux.getFlujoEmisor());
-				double suma2 = porcentajeFlotacion + porcentajeCavali;
-				suma2 /= 100;
-				aux.setFlujoBonista(-1 * valorComercial * (1 + suma2));
 
-			} else {
-				aux.setValorBono(this.valorNominal);
-				aux.setBonoIndexado(this.valorNominal * (1 + this.tasaInflacionPeriodo / 100));
-				aux.setCupon((tep / 100) * -1 * aux.getBonoIndexado());
-				if (i != this.totalPeriodos)
-					aux.setFlujoEmisor(aux.getCupon());
-				else
-					aux.setFlujoEmisor(aux.getCupon() - aux.getBonoIndexado() * (1 + porcentajePrima / 100));
-				aux.setFlujoEmisorConEscudo(aux.getFlujoEmisor() + escudo);// menos IR
-				aux.setFlujoBonista(aux.getFlujoEmisor() * -1);
+				aux.setFlujoBonista(Metodos.redondearDecimales(-1 * valorComercial * (1 + suma2), 2));
+
 			}
-			aux.setFlujoEmisor((aux.getFlujoEmisor()*100)/100);
-			aux.setFlujoBonista((aux.getFlujoBonista()*100)/100);
-			
-			
+
+			// DEMAS CUOTAS
+			else {
+
+				switch (metodo) {
+					case "Americano":
+						aux.setValorBono(valorNominal);
+						interes = Metodos.redondearDecimales(((tep / 100) * -1 * aux.getValorBono()), 2);
+						aux.setCupon(interes);
+						if (i == totalPeriodos)
+							aux.setCupon(interes - valorNominal);
+						break;
+					case "Aleman":
+
+						if (i == 1) {
+							aux.setValorBono(valorNominal);
+							interes = (tep / 100) * -1 * aux.getValorBono();
+							aux.setCupon(interes - amortizacion);
+						} else {
+							aux.setValorBono(cuotas.get(i - 1).getValorBono() - amortizacion);
+							interes = (tep / 100) * -1 * aux.getValorBono();
+
+							aux.setCupon(interes - amortizacion);
+						}
+						break;
+
+					case "Frances":
+
+						if (i == 1) {
+							aux.setValorBono(valorNominal);
+							interes = (tep / 100) * -1 * aux.getValorBono();
+							
+						} else {
+							//interes de la cuota anterior
+							aux.setValorBono(cuotas.get(i - 1).getValorBono() + cuotacte - interes);
+							//interes de cuota actual
+							interes = (tep / 100) * -1 * aux.getValorBono();
+						
+						}
+						aux.setCupon(cuotacte);
+						break;
+				}
+				aux.setCupon(Metodos.redondearDecimales(aux.getCupon(), 2));
+				if (metodo != "Americano")
+					escudo = Metodos.redondearDecimales(interes * 0.3, 2);
+				if (i != totalPeriodos)
+					aux.setFlujoEmisor(aux.getCupon());
+
+				// en ultima cuota
+				else {
+					Double prima = aux.getValorBono() * (porcentajePrima / 100);
+					aux.setFlujoEmisor(aux.getCupon() - prima);
+				}
+				
+				aux.setValorBono(Metodos.redondearDecimales(
+					aux.getValorBono()
+					,2));
+
+				aux.setFlujoEmisor(Metodos.redondearDecimales(
+					aux.getFlujoEmisor()
+					, 2));
+
+				aux.setFlujoEmisorConEscudo(Metodos.redondearDecimales(
+					(aux.getFlujoEmisor() - escudo)
+					,2));
+
+				aux.setFlujoBonista(Metodos.redondearDecimales(
+					(aux.getFlujoEmisor() * -1)
+					,2));
+
+
+
+			}
+
 			cuotas.add(aux);
-
 		}
 
-		switch (metodo) {
+		// CalculoFinal();
+	}
 
-		case "Alemán":
-			break;
-		case "Fracés":
-			break;
-		case "Americano":
-			break;
-
-		}
-		
-		tep = Metodos.redondearDecimales(tep, 7);
+	public void CalculoFinal() {
+		System.out.println("tir: " + Metodos.hallarTir(cuotas));
 	}
 }
