@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="layout/layout :: head ">
 </head>
 
 <body>
-	<header th:replace="layout/bono :: header"> </header>
+	<header th:replace="layout/layout :: inicio"> </header>
 
 	<section class="container">
 
@@ -49,9 +50,9 @@
 							<td th:text="${bono.fechaDeEmision}">.</td>
 							<td th:text="${bono.tea} + '%'">.</td>
 							<td th:text="${bono.tep} + '%'">.</td>
-							<td><a th:href="@{'/bono/info/' + ${bono.id}}"
-								class="btn btn-primary">Ver</a> <a
-								th:href="@{'/bono/del/' + ${bono.id}}"
+							<td><a th:href="@{'/bonocorp/bono/info/' + ${bono.id}}"
+								class="btn btn-primary">Ver</a> <a sec:authorize="hasRole('ROLE_EMPRESA')"
+								th:href="@{'/bonocorp/bono/del/' + ${bono.id}}"
 								onclick="return confirm('Seguro de eliminar?')"
 								class="btn btn-danger">Borrar</a></td>
 						</tr>
@@ -60,8 +61,8 @@
 			</div>
 
 			<br>
-			<h4 class="card-title">
-				<a class="btn btn-primary" th:href="@{'/bono/nuevo/'}"
+			<h4 sec:authorize="hasRole('ROLE_EMPRESA')" class="card-title">
+				<a class="btn btn-primary" th:href="@{/bonocorp/bono/nuevo}"
 					th:text="'Nuevo bono'"></a>
 			</h4>
 		</div>

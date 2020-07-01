@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head">
+</head>
+
+<body>
+
+	<header th:replace="layout/layout :: inicio"></header>
+		<br>
+		<div class="card text-center mx-auto" style="width: 40%;">
+
+			<br /> <img src="/img/bono.png"
+				style="width: 25%; height: 15%; margin: auto;" />
+
+
+			<h3 class="card-title">Ingresar a BonoCorp</h3>
+
+
+			<div class="card-body text-left">
+
+				<form th:action="@{/signin}" class="form-signin" method="post">
+
+					<div th:if="${param.error}" class="alert alert-danger">
+						Usuario y Contrase�a invalidos</div>
+					<div th:if="${param.logout}" class="alert alert-success">Haz
+						salido de forma correcta</div>
+
+
+					<div class="form-group">
+						<label for="Usuario">Usuario</label> <input type="text"
+							class="form-control" id="inputUsername" name="inputUsername"
+							placeholder="Ingrese su usuario" required />
+					</div>
+
+					<div class="form-group">
+						<label for="Contraseña">Contraseña</label> <input
+							type="password" class="form-control" id="inputPassword"
+							name="inputPassword" placeholder="Ingrese su contraseña"
+							required>
+					</div>
+					<button type="submit" class="botonini btn-primary ">Login</button>
+				</form>
+
+			</div>
+			<!-- FOOTER DEL LOGIN -->
+			<div class="card-body">
+				<a th:href="@{/bonocorp/registro}">Regístrate en BonoCorp</a> <b>*</b>
+				<a th:href="@{#}">Olvidaste tu contraseña?</a>
+			</div>
+			<p class="mt-5 mb-3 text-muted">BonoCorp&copy; 2020</p>
+		</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>

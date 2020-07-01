@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="layout/layout :: head ">
 </head>
 
 <body onload="cambia_bandera();">
 
-	<header th:replace="layout/bono :: header "> </header>
+	<header th:replace="layout/layout :: inicio "> </header>
 
 	<!-- TITULO -->
 	<br>
@@ -16,14 +17,14 @@
 
 	<div style="width:70%; margin:auto;">
 		<!-- INICIO FORM -->
-		<form th:action="@{/bono/save}" th:object="${bono}" method="post">
+		<form th:action="@{/bonocorp/bono/save}" th:object="${bono}" method="post">
 
 			<div th:replace="layout/bono:: bloquesAcordeon"></div>
 
 			<!-- BOTONES -->
-			<div class="d-flex justify-content-center">
+			<div  class="d-flex justify-content-center">
 				<button type="submit" class="btn btn-success m-4">Guardar</button>
-				<a th:href="@{/bono/start}" class="btn btn-danger m-4"> Cancelar</a>
+				<a th:href="@{/bonocorp/bono/misbonos}" class="btn btn-danger m-4"> Cancelar</a>
 			</div>
 			<!-- END BOTONES -->
 

@@ -1,5 +1,6 @@
 package com.bonocorp.app.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import com.bonocorp.app.service.UsuarioService;
 
 
 @Controller
-@RequestMapping("bono")
+@RequestMapping("/bonocorp/bono")
 @SessionAttributes({"bono", "cuota", "usuario"})
 public class BonoController {
 
@@ -32,11 +33,12 @@ public class BonoController {
 	
 	private static Usuario autenticado=null; 
 
+	/*
 	@ModelAttribute
 	public void getUsuario(Model model) {
 		model.addAttribute("autenticado", autenticado);
 	}
-	
+	*/
 	
 	//OBTENER SOLO LOS BONOS DEL USUARIO
 	@GetMapping("/misbonos/{id}")
@@ -65,11 +67,9 @@ public class BonoController {
 	//OBTENER SOLO LOS BONOS DEL USUARIO
 		@GetMapping("/misbonos")
 		public String misbonos(Model model){
-		
 			try {
-			model.addAttribute("autenticado", autenticado);
-			model.addAttribute("bonos", autenticado.getBonos());
-			model.addAttribute("titulo", ": Mis bonos");
+				List<Bono> bonos = bonoServ.readAll();
+				model.addAttribute("bonos", bonos);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -85,19 +85,17 @@ public class BonoController {
 		return "/bono/nuevo";
 	}
 	
-	@PostMapping(value="/save")
+	@PostMapping("/save")
 	public String save (@ModelAttribute("bono")Bono bono, Model model, SessionStatus status) {
 		try {
 			bono.CalcularFlujo();
-			bono.setUsuario(autenticado);
 			bonoServ.create(bono);
 			status.setComplete();
-			return "redirect:/bono/misbonos/"+autenticado.getId();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "/bono/nuevo";
+		return "redirect:/bonocorp/bono/misbonos";
 	}
 	
 	
@@ -133,7 +131,7 @@ public class BonoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/bono/misbonos";
+		return "redirect:/bonocorp/bono/misbonos";
 	}
 	
 }

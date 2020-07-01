@@ -17,7 +17,7 @@
 
 		<div class="card-body text-left">
 
-			<form th:action="@{/inicio/save}" th:object="${usuario}"
+			<form th:action="@{/bonocorp/registro/save}" th:object="${usuario}"
 				method="post">
 
 				<div class="form-group">
@@ -29,20 +29,19 @@
 				</div>
 
 				<div class="form-group">
-					<label for="Nombres">Nombre y Apellido</label> <input type="text"
+					<label for="Nombres">Nombre de la empresa</label> <input type="text"
 						class="form-control" th:field="*{nombres}" required
 						pattern="[A-Za-z   ]{4,30}"
 						title="Los nombres solo pueden incluir letras. De 4 a 30 dígitos">
 				</div>
 
 				<div class="form-group">
-					<label for="Contraseña">Contraseña</label> <input type="text"
+					<label for="Contraseña">Contraseña</label> <input type="password"
 						class="form-control" th:field="*{contraseña}" required
 						pattern="[A-Za-z0-9]{4,12}"
 						title="El contraseña solo debe incluir mayúsculas, minúsculas y números. 
 							De 4 a 12 dígitos">
 				</div>
-
 				<button type="submit" class="btn-primary botonini">Registrar</button>
 			</form>
 		</div>

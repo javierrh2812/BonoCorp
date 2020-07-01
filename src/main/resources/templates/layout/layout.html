@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 <meta charset="utf-8">
 <meta name="viewport"
@@ -9,8 +10,8 @@
 
 <title th:text="'BonoCorp' + ${titulo}"></title>
 <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-<link rel="stylesheet" href="/css/estilo.css"/>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" href="/css/estilo.css" />
 
 
 
@@ -28,12 +29,38 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<ul class="navbar-nav nav-tabs">
-					<li class="nav-item"><a class="nav-link" href="#">¿Quienes
-							somos?</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">¿Cómo
-							usar BonoCorp?</a></li>
+					<li sec:authorize="isAnonymous()" class="nav-item">
+						<a id="link-somos" class="nav-link"
+						th:href="@{/bonocorp}" aria-disabled="true">¿Quienes somos?</a></li>
+					<li  sec:authorize="isAnonymous()" class="nav-item">
+						<a id="link-usar" class="nav-link"
+						href="#" aria-disabled="true">¿Cómo usar BonoCorp?</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item">
+						<a id="link-bono" class="nav-link" th:href="@{/bonocorp/bono/misbonos}"
+						aria-disabled="true">Mis Bonos</a>
+					</li>
+					<li sec:authorize="hasRole('ROLE_EMPRESA')" class="nav-item">
+						<a id="link-new" class="nav-link" th:href="@{/bonocorp/bono/nuevo}"
+						aria-disabled="true">Nuevo Bono</a>
+					</li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a
+						id="link-datos" class="nav-link" th:href="@{/misdatos}"
+						aria-disabled="true">Mis Datos</a></li>
 				</ul>
 			</div>
+			<span class="navbar-text">
+				<ul class="navbar-nav nav-tabs">
+					<li sec:authorize="isAnonymous()" class="nav-item">
+					<a class="btn btn-warning" th:href="@{/bonocorp/registro}"
+						aria-disabled="true">Registrarse</a> 
+					<a class="btn btn-success"
+						th:href="@{/bonocorp/login}" aria-disabled="true">IniciarSesión</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a
+						class="btn btn-danger" th:href="@{/logout}"
+						aria-disabled="true">Cerrar Sesión: <span
+							sec:authentication="name">Username</span></a></li>
+				</ul>
+			</span>
 		</nav>
 
 

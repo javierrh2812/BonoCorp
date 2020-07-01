@@ -112,9 +112,10 @@ public @Data class Bono {
 	// cascadetype.all para persistir la lista
 	// orphan removal para eliminar los elementos anteriores
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "bono_id")
+	@JoinColumn(name = "cuota_id")
 	private List<Cuota> cuotas = new ArrayList<Cuota>();
 
+	
 	// RESULTADOS FINALES
 
 	@Column(name = "tcea_emisor")
@@ -131,7 +132,8 @@ public @Data class Bono {
 
 	@Column(name = "valor_neto_actual")
 	private Double valorNetoActual;
-
+	
+	
 	public void CalcularDatos() {
 
 	}

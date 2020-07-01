@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="layout/layout :: head ">
 
@@ -7,37 +8,6 @@
 
 <body>
 	<header th:fragment="header">
-
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">BonoCorp</a>
-
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a class="nav-link" th:href="@{/bono/misbonos/}">Mis Bonos</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/bono/nuevo}">Nuevo Bono</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/misdatos}">Mis Datos</a></li>
-				</ul>
-
-
-
-
-				<!-- Default dropleft button -->
-				<div class="btn-group dropleft">
-					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false" th:text="${autenticado.nombres}"></button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="/inicio/login">Cerrar sesión</a>
-						<!-- Dropdown menu links -->
-					</div>
-				</div>
-
-			</div>
-		</nav>
 
 		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
 		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
@@ -47,7 +17,7 @@
 	</header>
 
 	<!-- INICIO FORM -->
-	<form th:action="@{/bono/save}" th:object="${bono}" method="post" th:fragment="formBono">
+	<form th:action="@{/bonocorp/bono/save}" th:object="${bono}" method="post" th:fragment="formBono">
 
 		<!-- INICIO ACORDEON -->
 		<div class="accordion" id="accordion" th:fragment="bloquesAcordeon">
@@ -349,17 +319,8 @@
 			</div>
 			<!-- END BLOQUE 3 -->
 
-
-
-
-
-
-
-
 			<!-- BLOQUE 4 - DATOS CALCULADOS -->
 			<div class="card">
-
-
 				<!-- inicio card header -->
 				<button class="btn btn-acord" type="button" 
 				data-toggle="collapse" data-target="#collapseFour">Datos
@@ -372,8 +333,6 @@
 					<div class="card-body">
 
 						<div class="form-row d-flex justify-content-center">
-
-
 							<div class="col-md-2">
 								<label>Periodos por año</label>
 								<input id="ppa" th:field="*{periodosPorAño}" 
@@ -421,28 +380,20 @@
 			</div>
 			<!-- END BLOQUE 4 -->
 
-
-
-
-
-
 		</div>
 		<!--END ACCORDEON -->
 
 		<!-- BOTONES -->
 		<div class="d-flex justify-content-center" th:fragment="botones">
 
-			<button type="submit" class="btn btn-primary m-4">Guardar</button>
+			<button sec:authorize="hasRole('ROLE_EMPRESA')" type="submit" class="btn btn-primary m-4">Guardar</button>
 
-			<a th:href="@{/bono/misbonos}" class="btn btn-danger m-4"> Cancelar</a>
+			<a th:href="@{/bonocorp/bono/misbonos}" class="btn btn-danger m-4"> Cancelar</a>
 		</div>
 		<!-- END BOTONES -->
 
-
 	</form>
 	<!-- end form -->
-
-
 
 	<footer th:replace="layout/layout :: footer "> </footer>
 

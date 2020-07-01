@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace = "layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: inicio"></header>
+	<main role="main">
+		<section class="jumbotron text-center">
+		    <div class="container">
+		      <div class="col-md-15 p-lg-15 mx-auto my-15">
+						<h1 class="display-4 font-weight-normal">BonoCorp</h1>
+						<img
+							src="/img/bono.png" style="width: 15%; height: 10%; margin: auto;">
+						<p sec:authorize="isAnonymous()" class="lead font-weight-normal"> Somos una empresa de aplicaciones web en un nuevo rubro en las 
+						finanzas buscamos la mejora y cordialidad de generar un vinculo como siempre hacia nuestros clientes
+						dicho programa se trata de bonos corporativos... </p>
+						<a sec:authorize="isAnonymous()" th:href="@{bonocorp/registro}" class="btn btn-primary"><i
+							class="fas fa-plus-circle"></i> Registrate</a>
+					</div>
+		    </div>
+		</section>
+	</main>		
+  		
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
