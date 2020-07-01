@@ -1,14 +1,8 @@
 # BonoCorp
 Proyecto para el curso de Finanzas e Ingeniería Económica - UPC 
 
-## Frontend
-Angular, bootstrap, javascript
-
-## Backend
-Java, JPA, Hibernate
-
-## Framework
-Spring framework
+## Tecnologias utilizadas
+Spring framework, Spring boot project, java, html, css, javascript, thymeleaf, lombok, h2-database 
 
 ## Instrucciones
 Este proyecto se podrá ejecutar al clonar solo con Spring Tools Suite sin ningun problema
