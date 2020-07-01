@@ -11,8 +11,8 @@
 	<br>
 
 	<div class="card text-center mx-auto" style="width: 40%;">
-		<br>
-		<img src="/img/bono.png"  style="width: 10%; height: 55%;margin: auto;"/>
+		<br> <img src="/img/bono.png"
+			style="width: 10%; height: 55%; margin: auto;" />
 		<h3 class="card-title">Regístrate en BonoCorp!</h3>
 
 		<div class="card-body text-left">
@@ -24,23 +24,32 @@
 					<label for="nombreUsuario">Usuario</label> <input type="text"
 						class="form-control" th:field="*{nombreUsuario}" required
 						pattern="[A-Za-z0-9]{4,12}"
-						title="El nombre de usuario solo puede incluir mayúsculas, minúsculas y números. 
-							De 4 a 12 dígitos">
+						title="El nombre de usuario solo puede incluir mayusculas, minusculas y numeros. 
+							De 4 a 12 dugitos">
 				</div>
 
 				<div class="form-group">
 					<label for="Nombres">Nombre y Apellido</label> <input type="text"
 						class="form-control" th:field="*{nombres}" required
 						pattern="[A-Za-z   ]{4,30}"
-						title="Los nombres solo pueden incluir letras. De 4 a 30 dígitos">
+						title="Los nombres solo pueden incluir letras. De 4 a 30 digitos">
 				</div>
 
 				<div class="form-group">
-					<label for="Contraseña">Contraseña</label> <input type="text"
+					<label for="Contrase�a">Contraseña</label> <input type="text"
 						class="form-control" th:field="*{contraseña}" required
 						pattern="[A-Za-z0-9]{4,12}"
-						title="El contraseña solo debe incluir mayúsculas, minúsculas y números. 
-							De 4 a 12 dígitos">
+						title="El contrase�a solo debe incluir mayusculas, minusculas y numeros. 
+							De 4 a 12 digitos">
+				</div>
+
+				<div class="form-group">
+					<label for="TipoDeUsuario">Tipo De Usuario</label> <select
+						th:field="*{rol}"
+						class="form-control">
+						<option value="B">Bonista</option>
+						<option value="E">Emisor</option>
+					</select>
 				</div>
 
 				<button type="submit" class="btn-primary botonini">Registrar</button>
@@ -49,7 +58,7 @@
 
 		<!-- FOOTER DEL LOGIN -->
 		<div class="card-body">
-			<a th:href="@{/inicio/login}">Ya tienes cuenta? Iniciar sesión</a> <b>*</b>
+			<a th:href="@{/inicio/login}">Ya tienes cuenta? Iniciar sesion</a> <b>*</b>
 			<a th:href="@{#}">Olvidaste tu contraseña?</a>
 		</div>
 	</div>

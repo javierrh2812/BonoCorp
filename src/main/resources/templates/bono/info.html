@@ -29,6 +29,86 @@
 		</div>
 
 
+		<!-- BLOQUE 4 - DATOS CALCULADOS -->
+		<div class="card">
+
+			<div class="card-header">
+				<h3>Resultados</h3>
+				<span>Debe guardar los cambios para ver el nuevo flujo</span>
+			</div>
+
+			<div class="card-body">
+
+				<div class="form-row d-flex justify-content-center">
+
+
+
+					<div class="col-md-3">
+						<label>TCEA Emisor</label>
+						<div class="input-group">
+							<input th:field="*{bono.tceaEmisor}" readonly=true type="number"
+								class="form-control">
+
+							<div class="input-group-append">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label>TCEAc/Escudo</label>
+						<div class="input-group">
+							<input th:field="*{bono.tceaEmisorConEscudo}" readonly=true
+								type="number" class="form-control">
+							<div class="input-group-append">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label>TREA Bonista</label>
+						<div class="input-group">
+							<input th:field="*{bono.treaBonista}" readonly=true type="number"
+								class="form-control">
+
+							<div class="input-group-append">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- end form row -->
+				
+				
+				<div class="form-row d-flex justify-content-center">
+
+
+					<div class="col-md-3">
+						<label>Valor actual</label> <input th:field="*{bono.va}"
+							readonly=true type="number" class="form-control">
+					</div>
+
+					<div class="col-md-3">
+						<label>Utilidad/Perdida</label> <input th:field="*{bono.van}"
+							readonly=true type="number" class="form-control">
+					</div>
+
+
+				</div>
+				<!-- end form row -->
+
+			</div>
+			<!-- end card body -->
+
+
+
+		</div>
+		<!-- END BLOQUE 4 -->
+
+
+
 
 		<div class="card card-body">
 			<!-- FLUJO PROYECTADO -->
@@ -37,10 +117,12 @@
 				<thead class="thead-dark">
 					<tr>
 						<th>N°</th>
+						<th>Fecha</th>
 						<th>Bono</th>
+						<th>Bono Indexado</th>
 						<th>Cuota</th>
 						<th>F/Emisor</th>
-						<th>F/Emisor /c Escudo</th>
+						<th>Con Escudo</th>
 						<th>F/Bonista</th>
 					</tr>
 				</thead>
@@ -48,8 +130,10 @@
 				<tbody>
 					<tr th:each="cuota:${cuotas}">
 						<th th:text="${cuota.numeroCuota}"></th>
+						<th th:text="${cuota.fechaPago}"></th>
 						<td th:text="${cuota.valorBono}"></td>
-						<td th:text="${cuota.cupon}"></td>
+						<td th:text="${cuota.bonoIndexado}"></td>
+						<td th:text="${cuota.cuota}"></td>
 						<td th:text="${cuota.flujoEmisor}"></td>
 						<td th:text="${cuota.flujoEmisorConEscudo}"></td>
 						<td th:text="${cuota.flujoBonista}"></td>

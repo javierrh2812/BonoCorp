@@ -133,7 +133,7 @@ public class BonoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/bono/misbonos";
+		return "redirect:/bono/misbonos/"+autenticado.getId();
 	}
 	
 }

@@ -60,9 +60,9 @@ spring:
     database: h2
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console:
       enabled: true
-      #path: /h2-console    
+      path: /h2-console    

@@ -70,6 +70,7 @@ function calcular_tea(){
 
 	
 }
+
 function calcular_periodos(){
 	//periodos por año
  //ppa = 360/frecuencia de pago
@@ -93,7 +94,11 @@ function calcular_tperiodos(){
 	var tdesc=document.getElementById("tdesc").value;
 	var tper=(((1+(tdesc/100))**(fdp/360))-1)*100;
 	
-
+	//TINFLACIONPERIODO
+	var tinfa = document.getElementById("tinfa").value;
+	var tinfper = (((1+(tinfa/100))**(fdp/360))-1)*100;
+	
+	
 	//MÉTODO PARA REDONDEAR A 7 DECIMALES
 	tep = Math.round(tep*10000000);
 	tep /= 10000000;
@@ -101,23 +106,15 @@ function calcular_tperiodos(){
 	tper=Math.round(tper*10000000);
 	tper /= 10000000;
 
-
+	tinfper=Math.round(tinfper*10000000);
+	tinfper /= 10000000;
    
 	document.getElementById("tep").value=tep;
 	document.getElementById("tperiod").value=tper;
-
-	calcula_escudo();
+	document.getElementById("tinfper").value=tinfper;
 }
 
-function calcula_escudo(){
 
-	var escudo= document.getElementById("vnom").value*document.getElementById("tep").value*0.003;
-
-	escudo=Math.round(escudo*100);
-	escudo/=100;
-
-	document.getElementById("escudo").value=escudo;
-}
 
 function cambia_tasa(){
 	switch (document.getElementById("tipoDeTasa").value){

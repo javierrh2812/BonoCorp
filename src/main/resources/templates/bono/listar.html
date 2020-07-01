@@ -5,7 +5,7 @@
 </head>
 
 <body>
-	<header th:replace="layout/bono :: header"> </header>
+	<header th:replace="layout/bono :: bonista"> </header>
 	
 	
 	<section class="container">
@@ -24,7 +24,8 @@
 				<table th:if="${not #lists.isEmpty(bonos)}"
 					class="table table-hover">
 					<thead class="thead-dark">
-						<tr>
+						<tr>	
+							<th scope="col">Emisor<th>
 							<th scope="col">Moneda</th>
 							<th scope="col">Valor Nominal</th>
 							<th scope="col">Valor Comercial</th>
@@ -36,6 +37,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="bono: ${bonos}">
+							<td th:text="${bono.usuario,nombres}"></td>
 							<td th:switch="${bono.tipoMoneda}">
 							
 							<span th:case=1>PEN</span>
@@ -62,8 +64,8 @@
 
 			<br>
 			<h4 class="card-title">
-				<a class="btn btn-primary" th:href="@{'/bono/nuevo/'}"
-					th:text="'Nuevo bono'"></a>
+				<a class="btn btn-primary" th:href="@{'/bono/listar/'}"
+					th:text="'Agregar Bono'"></a>
 			</h4>
 		</div>
 	</section>

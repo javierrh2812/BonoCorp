@@ -31,6 +31,9 @@ public @Data class Usuario {
 
 	@Column
 	private String nombres;
+	
+	@Column
+	private Character rol;
 
 	// COUTAS, CUPONES
 	// cascadetype.all para persistir la lista
